@@ -292,10 +292,12 @@ The Console provides real-time updates and other program outputs, excluding plot
 Various plots, including Time Series, Phase Space, Recurrence Plots, Reconstructed Plots, and Mutual Information Function vs. Delay Plots, are automatically saved upon program completion. You will be prompted to choose a location for saving these plots.   
 You can easily generate the folder structure using the Create folders/Subfolders button.   
 Here is how the folders will be generated using the Create Folders/Subfolders button:    
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/8579adab-77d1-4989-bb24-27e555b1f2d1)
+![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/8dc886de-ba03-42a4-b0e5-d3b6b1f4afb6)
+
   
 Here is how the files will be saved:    
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/cceab99c-e5be-4e98-9c03-4ba21748333a)
+![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/daa520f7-bdf9-46c4-a87f-13d238bf8f96)
+
 
 
  
@@ -318,8 +320,6 @@ Click the RQA measures and Network Measures button  and navigate to the folder w
 Upon completion, the program will create a new Excel file in the same location as shown below:    
 
   
-
-Processing Flow :  
 
 
 
