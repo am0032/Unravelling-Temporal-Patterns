@@ -109,17 +109,6 @@ e = 35
 k is the varied parameter
 
 ## Transient-Removal  
-Phase space with transient behaviour-  
-  
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/323c4b5a-76ab-4892-8f3a-0ffc672eeed0)
-  
-  
-Phase space with transient behaviour removed-   
-  
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/36d16ef0-f7e7-4627-8f89-3d820e94d014)
-  
-
-
 For Transient behaviour removal, I have used the below two methods :  
 1)Use the final condition of an iteration as the initial condition of the next parameter iteration.  
 2)Removed 50 percentage of initial time-series data points.  
@@ -143,7 +132,6 @@ For Optimal embedding delay one can use two of the options below in the user int
 For Optimal embedding delay the below method is used :  
 1)False Nearest Neighbours Method- [6]   
 
-Perfromance stats for this is not loggged yet but a considerable difference is also seen when using multi core cpu.  
  
 ## RQA-Network  
 
@@ -174,7 +162,7 @@ average path length
 Clustering Coefficient     
 Diagonal Line Entropy   
 Network Density     
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/29adcfe5-c985-4ffc-b5df-2ebbc5c0cefc)  
+
 
 
 
@@ -223,7 +211,6 @@ Instructions on how to install the project.
 
 
 3) Open command prompt on Windows:   
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/3d5f24b6-00f9-4425-807f-263ece9e9f1a)   
 
 Please copy the commands below (using top right icon below), paste (right click ) them into Windows  command prompt window, and run (Enter) them to install the necessary dependencies :  
 
@@ -278,18 +265,21 @@ Executable : Still in progress
 
 #### Tab-1
 Tab1: Time Series Generation
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/f47a42c1-5ff9-4ad1-b883-3180d97e45cf)
+![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/4525095d-3a96-4447-aad3-9e4404a59842)
+
 
   
 
 Within this section, you can generate pure time series data that belong to specific classes, such as periodic or chaotic. Here's how it works:  
 
 Use the dropdown menu to select the system for generating time series data and specify the parameter you want to vary:  
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/04939fc9-ab6a-418f-81d9-36d0d2e63955)
+![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/85bb99a7-c673-4f8a-84dd-a368628969e6)
+
 
  
 One can inject noise into the time series using a noise radio button or generate noise-only data from the systems available. The standard deviation of noise can be custom picked and visualized :  
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/313c8174-82a6-4e14-8859-9c7760f546c4)
+![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/32215682-7c0d-47bd-8567-07d25fcfdba8)
+
 
 
  
@@ -309,8 +299,6 @@ Here is how the files will be saved:
 
 
  
-Processing flow:  
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/94eb9c9a-03a3-4568-ad71-822e7f312efe)  
 
 
 
@@ -318,7 +306,8 @@ Processing flow:
 
 #### Tab-2  
 Tab2: RQA and Network Analysis   
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/39c7f283-8d6b-4104-b436-44252720e60a)
+![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/9380c0ff-125d-4e9a-a04e-d7220be927b8)
+
 
    
 
@@ -327,33 +316,33 @@ This tab performs Recurrence Quantification Analysis (RQA) and network analysis.
 The recurrence plot radio button can be used to generate a recurrence plot in this tab as well as it is needed for unseen data. Make sure to pick the same method used for finding embedding delay here as well in the drop-down menu.  
 Click the RQA measures and Network Measures button  and navigate to the folder where the time series data was generated and select it.  
 Upon completion, the program will create a new Excel file in the same location as shown below:    
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/34efd3fa-0b35-4865-8f87-49bc32287694)
+
   
 
 Processing Flow :  
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/bd9fe671-fa26-41dd-ab21-d0530005c691)  
+
 
 
 
 #### Sorting-of-Data-for-RQA-Network-method   
 In each class folder inside each system we now have the RQA and network measures:  
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/64bab96c-69a0-436a-82f4-6c9c4b633ff1)
+
    
 
 Add a class column to the end based on the corresponding class the file is from and remove the parameter (rho,c etc.) column, Network density, Degree Distribution, and Degree Centrality as shown below :   
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/5a5583d2-2d6c-4d84-b171-ef65a145a21f)
+
   
 
 
 Repeat for all RQA and Network Excel files and  combine all the RQA and Network file data into a single Excel file with a single header row like:   
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/edf981cd-cd54-460c-be7a-55103447d5af)
+
    
 
 Now we have the features ready for  training the Machine Learning algorithms in tab3.  
 
 #### Sorting-of-Data-for-Recurrenceplot-method  
 Make a folder inside a parent folder with the Class names as shown below:  
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/8275aa5d-0884-4021-9c8d-f4587d6320cf)
+
   
 
 
@@ -378,7 +367,8 @@ Now we can use these for Training in tab 4.
 
 #### 3 Tab-3  
 Tab3: Machine Learning - RQA and Network Measures   
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/042b9dc2-018c-4b36-9e5f-bf7c2bd34db8)
+![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/709c779e-b339-4173-9739-9a67fac13fc8)
+
   
 
 In this tab, you can perform machine learning tasks related to RQA and network measures:  
@@ -388,7 +378,8 @@ It also saves the trained models using Joblib in the same location as the sorted
 
 #### Tab-4  
 Tab4: Image Classifier SVM  
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/b48f7b31-13d6-4dd8-898e-774c97a2bacc)
+![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/98d4c420-09c3-4c66-bdfd-fef205126e63)
+
  
 
 
@@ -419,7 +410,7 @@ Sorting-of-Data-for-Recurrenceplot-method-P
 3) Go to tab 4 and use the model saved for recurrence plot-based classification and also the recurrence plot images and make predictions  
     
 If there are multiple Recurrence Plot images for prediction, you can utilize the slider within the same window which will pop up once the predictions are made: 
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/b99644f9-50ae-4813-b7fc-8258b73288f1)
+
 
 
 Predictions are displayed as text overlays in the same window and are also saved in a new folder at the same location.  
