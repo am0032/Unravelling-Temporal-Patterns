@@ -1,6 +1,6 @@
 # Unravelling-Temporal-patterns   
 
-
+Notice: Updating plots and images
 Time series data refers to a collection of data points that are recorded, measured, or observed over a period of time. The accurate classification of these temporal sequences is crucial for informed decision-making in various domains such as weather data, finance, and healthcare (1)(5). This project explores two approaches for time series classification using Recurrence Quantification Analysis (RQA) and Recurrence Network measures with machine learning, and classification using recurrence plot images with Machine Learning.  
 
 This project is a Python software with GUI for the following tasks:  
