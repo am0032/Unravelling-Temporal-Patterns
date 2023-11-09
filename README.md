@@ -342,7 +342,9 @@ step 3- Repeat for all RQA and Network Excel files and  combine all the RQA and 
 
    
 
-Now we have the features ready for  training the Machine Learning algorithms in tab3.  
+Now we have the features ready for  training the Machine Learning algorithms in tab3.   
+Note: One can keep Lmax and Trapping Time as features as well.  
+
 
 #### Sorting-of-Data-for-Recurrenceplot-method  
 Make a folder inside a parent folder with the Class names as shown below:  
