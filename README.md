@@ -11,7 +11,7 @@ This project is a Python software with GUI for the following tasks:
   
 The tab 3 and tab 4 can be used for general machine-learning classification and prediction problems as well.   
 
-I implemented CPU-based parallel processing to substantially reduce the computation time for Average Mutual Information and FNN calculations, which are essential for determining embedding delay and dimension. This enhancement is readily noticeable when comparing it to the previous version, RLV45.Use RLV50 for parallel processing features. All these features facilitate the computation of more than 1 million time series points. RLV50 also uses a CNN for Recurrence plot classification instead of SVM. 
+I implemented CPU-based parallel processing to substantially reduce the computation time for Average Mutual Information and FNN calculations, which are essential for determining embedding delay and dimension. This enhancement is readily noticeable when comparing it to the previous version, RLV45.Use RLV50 for parallel processing features.RLV50 also uses a CNN for Recurrence plot classification instead of SVM. 
 
 Furthermore, I employed the PyRQA library (in RLV50), which has been documented as the most efficient RQA method compared to alternatives such as pyunicorn and manual approaches, except for approximate methods [2].  
 
