@@ -326,17 +326,17 @@ Upon completion, the program will create a new Excel file in the same location a
 
 #### Sorting-of-Data-for-RQA-Network-method   
 step 1- In each class folder inside each system we now have the RQA and network measures:  
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/2d4ffb96-5007-45b1-a9ce-9f3cca9748ed)
+![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/2d4ffb96-5007-45b1-a9ce-9f3cca9748ed)  
 
 
    
 
-step 2- Add a class column to the end based on the corresponding class the file is from and remove the parameter (rho,c etc./ last column with variable name in step 1   
+step 2- Add a class column to the end based on the corresponding class the file is from and remove the parameter (rho,c etc./ last column with variable name).  
 
   
 
 
-step 3- Repeat for all RQA and Network Excel files and  combine all the RQA and Network file data into a single Excel file with a single header row like:   
+step 3- Repeat for all RQA and Network Excel files and  combine all the RQA and Network file data into a single Excel file with a single header row like:    
 ![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/0ceded84-61ac-4c28-83e0-9d22a435ec91)
 
 
