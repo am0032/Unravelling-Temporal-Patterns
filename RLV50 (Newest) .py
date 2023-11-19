@@ -3054,114 +3054,155 @@ def update_status(message):
     root.update_idletasks()
 
 def rqanetowrkMLcode():
-    update_status("Running analysis...")
-
-    # pick an Excel file
-    file_pathrqanetowrkMLcode = filedialog.askopenfilename(
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+    # Pick an Excel file
+    file_path = filedialog.askopenfilename(
         title="Select Excel File with Features and added CLASS label",
         filetypes=[("Excel files", "*.xls;*.xlsx")]
     )
-    if not file_pathrqanetowrkMLcode:
-        update_status("No file selected. Exited File Selector")
+    if not file_path:
+        print("No file selected. Exiting File Selector")
         return
+    
+    data = pd.read_excel(file_path)
+    X = data.drop(columns=["CLASS"])  # Features
+    y = data["CLASS"]  # Target
 
-    data = pd.read_excel(file_pathrqanetowrkMLcode)
-    X = data.drop(columns=['CLASS'])
-    y = data['CLASS']
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
 
-    # Get unique class names from the 'CLASS' column
-    class_names = y.unique()
+    models = [
+        {
+            "name": "Decision Tree",
+            "estimator": DecisionTreeClassifier(),
+            "params": {"max_depth": [3, 5, 7, None], "min_samples_split": [2, 5, 10]},
+        },
+        {
+            "name": "Random Forest",
+            "estimator": RandomForestClassifier(),
+            "params": {
+                'n_estimators': [10,20,30,40,50,60,70,80,90,100,200],
+                'max_samples': [0.1,0.3,0.5, 0.7, 0.9],
+            },
+        },
+        {
+            "name": "k-NN",
+            "estimator": KNeighborsClassifier(),
+            "params": {
+                "n_neighbors": [3, 5, 7],  # Number of neighbors to consider
+                "weights": ["uniform", "distance"],  # Weight function used in prediction
+                "p": [1, 2],  # Power parameter for Minkowski distance metric
+                "algorithm": ["auto", "ball_tree", "kd_tree", "brute"],  # Algorithm used to compute the nearest neighbors
+                "leaf_size": [10, 20, 30, 40, 50],  # Leaf size passed to BallTree or KDTree
+                # Additional distance metrics
+                "metric": ["euclidean", "manhattan", "chebyshev"],
+            }
+    
+        },
+        {
+            "name": "Logistic Regression",
+            "estimator": LogisticRegression(max_iter=10000),
+            "params": {"C": [0.1, 1.0, 10.0,100.0], "solver": ["liblinear", "lbfgs"]},
+        },
+        {
+            "name": "SVM Kernels",
+            "estimator": SVC(),
+            "params": {
+                "C": [0.1, 1, 10, 100, 1000],  # Penalty parameter C
+                "gamma": [1, 0.1, 0.01, 0.001, 0.0001],  # Kernel coefficient for 'rbf'
+                "kernel": ['rbf'],  # Different kernel functions
 
-    # Split the data
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=45)
+            },
+        },
+    
 
-    # Create a directory for saving results and plots
-    result_dir = os.path.dirname(file_pathrqanetowrkMLcode)
-
-    # List of classifiers
-    classifiers = [
-        ("Decision Tree", DecisionTreeClassifier(random_state=45)),
-        ("Random Forest", RandomForestClassifier(random_state=45)),
-        ("SVM - RBF Kernel", SVC(kernel='rbf', random_state=45)),
-        ("SVM - Linear Kernel", SVC(kernel='linear', random_state=45)),
-        ("KNN", KNeighborsClassifier())
     ]
 
-    results = []
+    directory = os.path.dirname(file_path)
+    results_list = []
 
-    for clf_name, clf_model in classifiers:
-        # Train the classifier
-        clf_model.fit(X_train, y_train)
+    for model in models:
+        clf = GridSearchCV(model["estimator"], model["params"], cv=10)
+        clf.fit(X_train, y_train)
+        best_model = clf.best_estimator_
+        
+        if model['name'] in ['Random Forest', 'Decision Tree']:
+            if model['name'] == 'Random Forest':
+                feature_importances = best_model.feature_importances_
+            else:
+                feature_importances = best_model.feature_importances_
 
-        # Save the trained model using joblib
-        model_filename = f"{clf_name}_model.joblib"
-        model_path = os.path.join(result_dir, model_filename)
-        joblib.dump(clf_model, model_path)
-
-        # Predictions
-        predictions = clf_model.predict(X_test)
-
-        # Evaluation metrics
-        accuracy = accuracy_score(y_test, predictions)
-        precision = precision_score(y_test, predictions, average='weighted')
-        recall = recall_score(y_test, predictions, average='weighted')
-        f1 = f1_score(y_test, predictions, average='weighted')
-
-        # Confusion Matrix
-        cm = confusion_matrix(y_test, predictions)
-
-        # Normalize the confusion matrix
-        cm_normalized = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
-
-        # Calculate the per-class accuracy
-        per_class_accuracy = cm_normalized.diagonal()
-
-        # Print the per-class accuracy
-        for i, acc in enumerate(per_class_accuracy):
-            print(f"{clf_name} - Class {i} Accuracy: {acc}")
-
-        # Feature Importance (only for tree-based classifiers)
-        if hasattr(clf_model, 'feature_importances_'):
-            feature_importance = clf_model.feature_importances_
-            feature_names = X.columns
-
-            # Saving feature importance plot
-            plot_filename = f"{clf_name}_feature_importance.png"
-            plot_path = os.path.join(result_dir, plot_filename)
-            plt.figure(figsize=(20, 12))
-            plt.barh(feature_names, feature_importance)
+            plt.figure(figsize=(8, 6))
+            plt.barh(X.columns, feature_importances)
             plt.xlabel('Feature Importance')
             plt.ylabel('Features')
-            plt.title(f'{clf_name} - Feature Importance')
-            plt.savefig(plot_path)
+            plt.title(f'{model["name"]} - Feature Importance')
+            plt.tight_layout()
+
+            plt.savefig(os.path.join(directory, f"{model['name']}_feature_importance.png"))
             plt.close()
 
-        # Store the results in a dictionary
-        result = {
-            'Classifier': clf_name,
-            'Accuracy': accuracy,
-            'Precision': precision,
-            'Recall': recall,
-            'F1-Score': f1,
-            'Confusion Matrix': cm,
+        y_pred = best_model.predict(X_test)
+
+        accuracy = accuracy_score(y_test, y_pred)
+        precision = precision_score(y_test, y_pred, average="weighted")
+        recall = recall_score(y_test, y_pred, average="weighted")
+        f1 = f1_score(y_test, y_pred, average="weighted")
+        confusion = confusion_matrix(y_test, y_pred)
+        class_report = classification_report(y_test, y_pred)
+
+        class_accuracies = np.diag(confusion) / np.sum(confusion, axis=1)
+        
+        class_labels = np.unique(y_test)  # Extract unique class labels
+
+
+
+
+
+
+        results_text_file = os.path.join(directory, "model_evaluation_results.txt")
+
+        with open(results_text_file, "a") as text_file:
+            text_file.write(f"Model: {model['name']}\n")
+            text_file.write(f"Best Parameters: {clf.best_params_}\n")
+            text_file.write(f"Accuracy: {accuracy}\n")
+            text_file.write(f"Precision: {precision}\n")
+            text_file.write(f"Recall: {recall}\n")
+            text_file.write(f"F1 Score: {f1}\n")
+            text_file.write(f"Confusion Matrix:\n{confusion}\n")
+            text_file.write(f"Per-Class Accuracy:\n")
+            for i in range(len(class_accuracies)):
+                text_file.write(f"{class_labels[i]}: {class_accuracies[i]}\n")
+            text_file.write("Classification Report:\n")
+            text_file.write(class_report)
+            text_file.write("\n\n")
+
+        results_dict = {
+            "Model": model["name"],
+            "Best Parameters": str(clf.best_params_),
+            "Accuracy": accuracy,
+            "Precision": precision,
+            "Recall": recall,
+            "F1 Score": f1,
+            "Confusion Matrix": str(confusion),
         }
 
-        # Add per-class accuracy with class names as column headers
-        for i, class_name in enumerate(class_names):
-            result[f'Accuracy_{class_name}'] = per_class_accuracy[i]
+        # Adding per-class accuracies to the results_dict
+        for i in range(len(class_accuracies)):
+            results_dict[f"Class_{class_labels[i]}_Accuracy"] = class_accuracies[i]
 
-        results.append(result)
+        results_list.append(results_dict)
 
-        update_status(f"{clf_name} analysis completed.")
+        model_filename = os.path.join(directory, f"{model['name']}_model.joblib")
+        joblib.dump(best_model, model_filename)
 
-    # Save the results to an Excel file
-    results_df = pd.DataFrame(results)
-    result_filename = "classification_results.xlsx"
-    result_path = os.path.join(result_dir, result_filename)
-    results_df.to_excel(result_path, index=False)
-    status_label12.config(text="Trained Model saved...")
+    results_df = pd.DataFrame(results_list)
+    results_file = os.path.join(directory, "model_evaluation_results.xlsx")
+    results_df.to_excel(results_file, index=False)
+    print(f"Results saved to {results_file}")
 
-    update_status("Analysis completed. Results and models saved to 'classification_results.xlsx'.")
 
 
 
