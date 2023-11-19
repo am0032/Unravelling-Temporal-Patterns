@@ -36,7 +36,11 @@ from pyrqa.image_generator import ImageGenerator
 from joblib import Parallel, delayed
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import (
+    classification_report,
+)
+from sklearn.model_selection import  GridSearchCV
 stddvofsignal=0
 fixed_RR=0
 rr_stddev=0
