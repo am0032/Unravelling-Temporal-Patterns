@@ -3109,6 +3109,8 @@ def rqanetowrkMLcode():
             "name": "Logistic Regression",
             "estimator": LogisticRegression(max_iter=10000),
             "params": {"C": [0.1, 1.0, 10.0,100.0], "solver": ["liblinear", "lbfgs"]},
+            "multi_class": ["auto"],
+            
         },
         {
             "name": "SVM Kernels",
@@ -3160,7 +3162,7 @@ def rqanetowrkMLcode():
         class_accuracies = np.diag(confusion) / np.sum(confusion, axis=1)
         
         class_labels = np.unique(y_test)  # Extract unique class labels
-
+        
 
 
 
