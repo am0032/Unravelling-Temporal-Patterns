@@ -36,11 +36,8 @@ from pyrqa.image_generator import ImageGenerator
 from joblib import Parallel, delayed
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import (
-    classification_report,
-)
-from sklearn.model_selection import  GridSearchCV
+from sklearn.model_selection import GridSearchCV
+
 stddvofsignal=0
 fixed_RR=0
 rr_stddev=0
@@ -3049,33 +3046,99 @@ def rqanandnetwork():
         print("No folder selected.")
  
     
+ 
+    
+ 
+    
+def train_test_split_excel():
+    # Ask user to select an Excel file
+    file_path = filedialog.askopenfilename(title="Select Excel file", filetypes=[("Excel files", "*.xlsx;*.xls")])
+
+    if not file_path:  # If the user cancels file selection
+        print("File selection canceled.")
+        return
+
+    try:
+        # Read the Excel file
+        df = pd.read_excel(file_path)
+        
+        # Perform train-test split (adjust test_size and random_state as needed)
+        from sklearn.model_selection import train_test_split
+        train_df, test_df = train_test_split(df, test_size=0.2, random_state=42)
+
+        # Save train and test dataframes to separate Excel files
+        train_file_path = file_path.replace('.xlsx', '_train.xlsx')
+        test_file_path = file_path.replace('.xlsx', '_test.xlsx')
+
+        train_df.to_excel(train_file_path, index=False)
+        test_df.to_excel(test_file_path, index=False)
+
+        print("Train and test data saved successfully.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+    
+ 
+button_TRAIN_TEST_SPLIT = tk.Button(tab3, text="TRAIN_TEST SPLIT YOUR COMBINED FILE", command=train_test_split_excel, width=20)
+button_TRAIN_TEST_SPLIT.grid(row=1, column=0, padx=20, pady=20, sticky="nsew")
+button_TRAIN_TEST_SPLIT.config(bg="#2E778C", fg="black", font=font.Font(family="Lato", size=9, weight="bold"))  
+    
+status_label_TRAINTEST = tk.Label(tab3, text="This button splits your combined data file randomly into train and test files in 80-20 ratio.")
+status_label_TRAINTEST.configure(fg="white", bg="#1e1f26")
+status_label_TRAINTEST.grid(row=0, column=0) 
+
+ 
 
 
-
+from sklearn.linear_model import LogisticRegression
+status_label12 = tk.Label(tab3, text=" Pick the Feature Excel File using this button. Trained Models will be saved in the test file folder", padx=10, pady=10)
 
 def update_status(message):
     status_label12.config(text=message)
     root.update_idletasks()
 
+
+
+from sklearn.metrics import (
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
+    confusion_matrix,
+    classification_report,
+)
+
+
+
+
 def rqanetowrkMLcode():
     root = tk.Tk()
     root.withdraw()  # Hide the main window
-    # Pick an Excel file
-    file_path = filedialog.askopenfilename(
-        title="Select Excel File with Features and added CLASS label",
+    # Ask for training Excel file
+    train_file_path = filedialog.askopenfilename(
+        title="Select Excel File for Training Data",
         filetypes=[("Excel files", "*.xls;*.xlsx")]
     )
-    if not file_path:
-        print("No file selected. Exiting File Selector")
+    if not train_file_path:
+        print("No file selected for training data. Exiting File Selector")
         return
-    
-    data = pd.read_excel(file_path)
-    X = data.drop(columns=["CLASS"])  # Features
-    y = data["CLASS"]  # Target
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2, random_state=42
+    # Ask for testing Excel file
+    test_file_path = filedialog.askopenfilename(
+        title="Select Excel File for Testing Data",
+        filetypes=[("Excel files", "*.xls;*.xlsx")]
     )
+    if not test_file_path:
+        print("No file selected for testing data. Exiting File Selector")
+        return
+    print("Trainging Models. Check Test file folder for results.")
+    train_data = pd.read_excel(train_file_path)
+    test_data = pd.read_excel(test_file_path)
+
+    X_train = train_data.drop(columns=["CLASS"])  # Features for training
+    y_train = train_data["CLASS"]  # Target for training
+
+    X_test = test_data.drop(columns=["CLASS"])  # Features for testing
+    y_test = test_data["CLASS"]  # Target for testing
 
     models = [
         {
@@ -3109,24 +3172,22 @@ def rqanetowrkMLcode():
             "name": "Logistic Regression",
             "estimator": LogisticRegression(max_iter=10000),
             "params": {"C": [0.1, 1.0, 10.0,100.0], "solver": ["liblinear", "lbfgs"]},
-            "multi_class": ["auto"],
-            
         },
         {
             "name": "SVM Kernels",
             "estimator": SVC(),
             "params": {
                 "C": [0.1, 1, 10, 100, 1000],  # Penalty parameter C
-                "gamma": [1, 0.1, 0.01, 0.001, 0.0001],  # Kernel coefficient for 'rbf'
-                "kernel": ['rbf'],  # Different kernel functions
-
+                "gamma": [1, 0.1, 0.01, 0.001, 0.0001],  # Kernel coefficient for 'rbf', 'poly', and 'sigmoid'
+                "kernel": ['rbf', 'poly'],  # Different kernel functions
+                "degree": [2, 3, 4],  # Degree of the polynomial kernel function ('poly')
             },
         },
     
 
     ]
 
-    directory = os.path.dirname(file_path)
+    directory = os.path.dirname(test_file_path)
     results_list = []
 
     for model in models:
@@ -3141,7 +3202,7 @@ def rqanetowrkMLcode():
                 feature_importances = best_model.feature_importances_
 
             plt.figure(figsize=(8, 6))
-            plt.barh(X.columns, feature_importances)
+            plt.barh(X_train.columns, feature_importances)
             plt.xlabel('Feature Importance')
             plt.ylabel('Features')
             plt.title(f'{model["name"]} - Feature Importance')
@@ -3162,7 +3223,7 @@ def rqanetowrkMLcode():
         class_accuracies = np.diag(confusion) / np.sum(confusion, axis=1)
         
         class_labels = np.unique(y_test)  # Extract unique class labels
-        
+
 
 
 
@@ -3210,9 +3271,15 @@ def rqanetowrkMLcode():
     print(f"Results saved to {results_file}")
 
 
+# Function to trigger the machine learning function in a separate thread
+def start_ml__numerical_Train_Testthread():
+    ml_thread = threading.Thread(target=rqanetowrkMLcode)
+    ml_thread.start()
 
 
-status_label12 = tk.Label(tab3, text="Training Program is Idle- Pick the Feature Excel File using this button. Trained Models will be saved in the same folder", padx=10, pady=10)
+
+
+
 
 
 status_label12.configure(fg="white", bg="#1e1f26")
@@ -3220,7 +3287,7 @@ status_label12.configure(fg="white", bg="#1e1f26")
 
 
 
-status_label12.grid(row=0, column=1) 
+status_label12.grid(row=2, column=1) 
 
 
 
@@ -3288,11 +3355,11 @@ def perform_predictions():
 
 
 
-status_label = tk.Label(tab3, text="Predictions program is Idle-Choose the excel file with features for prediction and the saved model to use. Check Console window in tab1 for any errors")
+status_label = tk.Label(tab3, text="Choose the excel file with features for prediction and the saved model to use. Check Console window in tab1 for any errors")
 
 status_label.configure(fg="white", bg="#1e1f26")
 
-status_label.grid(row=2, column=1) 
+status_label.grid(row=4, column=1) 
 
 
 
@@ -3697,14 +3764,14 @@ rqa_button.config(bg="#ff5737", fg="black", font=font.Font(family="Lato", size=9
 
 
 # Create a button to run analysis
-buttonML = tk.Button(tab3, text="Train/Test", command=rqanetowrkMLcode)
+buttonML = tk.Button(tab3, text="Train/Test", command=start_ml__numerical_Train_Testthread)
 buttonML.config(bg="#117777", fg="black", font=("Lato", 9, "bold"))
-buttonML.grid(row=1, column=1, padx=20, pady=20) 
+buttonML.grid(row=3, column=1, padx=20, pady=20) 
 
 # Create a button for prediction process
 predict_button = tk.Button(tab3, text="Perform Predictions", command=perform_predictions)
 predict_button.config(bg="green", fg="black", font=("Lato", 9, "bold"))
-predict_button.grid(row=3, column=1, padx=22, pady=22) 
+predict_button.grid(row=6, column=1, padx=22, pady=22) 
 
 
 
