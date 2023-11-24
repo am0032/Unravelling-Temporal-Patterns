@@ -375,12 +375,12 @@ Now we can use these for Training in tab 4.
 Tab3: Machine Learning - RQA and Network Measures   
 ![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/cb762f03-fc0a-45a4-9925-7ac60e4b1cab)  
 
-
+The Train Test split button splits your combined data into two files for training and testing in an 80-20 ratio respectively and it is randomly split as well.
   
 
 In this tab, you can perform machine learning tasks related to RQA and network measures:  
 
-The Train/Test button trains and evaluates various machine learning models, such as Random Forest, Decision Tree, SVM (Linear and RBF), and KNN. When clicked it will ask the user to select the sorted Excel file from before.  
+The Train/Test button trains and evaluates various machine learning models, such as Random Forest, Decision Tree, SVM, Logistic Regression, and KNN. When clicked it will ask the user to select the train and test excel files those were created using the train-test split button.  
 It also saves the trained models using Joblib in the same location as the sorted Excel file.  
 
 #### Tab-4  
