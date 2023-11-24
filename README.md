@@ -373,7 +373,8 @@ Now we can use these for Training in tab 4.
 
 #### 3 Tab-3  
 Tab3: Machine Learning - RQA and Network Measures   
-![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/709c779e-b339-4173-9739-9a67fac13fc8)
+![image](https://github.com/am0032/Unravelling-Temporal-Patterns/assets/123314532/cb762f03-fc0a-45a4-9925-7ac60e4b1cab)  
+
 
   
 
