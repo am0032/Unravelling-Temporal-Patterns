@@ -3151,21 +3151,16 @@ def rqanetowrkMLcode():
             "estimator": RandomForestClassifier(),
             "params": {
                 'n_estimators': [10,20,30,40,50,60,70,80,90,100,200],
-                'max_samples': [0.1,0.3,0.5, 0.7, 0.9],
+                'max_samples': [0.1,0.3,0.5, 0.7, 0.9]
             },
         },
         {
             "name": "k-NN",
             "estimator": KNeighborsClassifier(),
             "params": {
-                "n_neighbors": [3, 5, 7],  # Number of neighbors to consider
-                "weights": ["uniform", "distance"],  # Weight function used in prediction
-                "p": [1, 2],  # Power parameter for Minkowski distance metric
-                "algorithm": ["auto", "ball_tree", "kd_tree", "brute"],  # Algorithm used to compute the nearest neighbors
-                "leaf_size": [10, 20, 30, 40, 50],  # Leaf size passed to BallTree or KDTree
-                # Additional distance metrics
-                "metric": ["euclidean", "manhattan", "chebyshev"],
-            }
+                "n_neighbors": [3, 5, 7],  
+                "weights": ["uniform", "distance"]  
+            },
     
         },
         {
@@ -3177,10 +3172,9 @@ def rqanetowrkMLcode():
             "name": "SVM Kernels",
             "estimator": SVC(),
             "params": {
-                "C": [0.1, 1, 10, 100, 1000],  # Penalty parameter C
-                "gamma": [1, 0.1, 0.01, 0.001, 0.0001],  # Kernel coefficient for 'rbf', 'poly', and 'sigmoid'
-                "kernel": ['rbf', 'poly'],  # Different kernel functions
-                "degree": [2, 3, 4],  # Degree of the polynomial kernel function ('poly')
+                "C": [0.1, 1, 10, 100, 1000],
+                "gamma": [1, 0.1, 0.01, 0.001, 0.0001], 
+                "kernel": ['rbf']
             },
         },
     
